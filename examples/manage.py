@@ -6,7 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "courseapp.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "examples.settings")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -20,14 +20,14 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 """
-Django
-- Web geliştirme frameworküdür.
-- Python dilini kullanır.
-- Alternatifleri : Asp.net, PHP, Nodejs
-- Öğrenmesi kolaydır.
-- django-admin start projecct <proje adı>
-- python manage.py runserver ile proje çalıştırılır.
+Django projesi oluşturma : django-admin startproject examples
 
+Django projesi içerisindeki manage.py dosyası ile django projesini çalıştırabiliriz.
+
+Çalıştırmak için : python manage.py runserver
+
+python manage.py startapp project : Django projesi içerisinde yeni bir app oluşturur.
+
+Url tanımlamak için : project/urls.py dosyası oluşturulur.
 """
