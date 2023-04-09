@@ -3,12 +3,13 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('details', views.details, name='details'),
+    path('index', views.index, name='index'),
     path('<int:category_id>', views.getProductsByCategoryId ),
-    path('<str:category>', views.getProductsByCategory),
+    path('<str:category>', views.getProductsByCategory, name="products_by_category"),
 ]
 
 """
 path() fonksiyonu ile url tanımlanır. İlk parametre url adresi, ikinci parametre ise hangi fonksiyonun çalışacağıdır.
 Path() sırası da önemlidir.
 """
+
