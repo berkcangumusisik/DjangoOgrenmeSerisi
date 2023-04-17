@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Index</title>
-</head>
-<body>
-    <h1>Index</h1>
-</body>
-</html>
+{% extends 'layout.html' %}
+{% block page_title %}
+  Index
+{% endblock page_title %}
+
+{% block content %}
+      <ul>
+          {% for category in categories %} 
+              <li><a href="{% url "products_by_category" category%}">{{ category}}</a></li>
+
+          {% endfor %}
+      </ul>
+{% endblock content %}
