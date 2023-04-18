@@ -20,8 +20,6 @@
             </div>
         
         {% else %}
-            <div>
-                No product
-            </div>
+            {% include 'partials/_no_product.html' %}
         {% endif %}
 {% endblock content %}

@@ -54,4 +54,8 @@ if kullanmak için {% %} kullanılır. {% endif %} ile if bloğunun sonunu belir
 | : pipe işareti ile birbirinden farklı işlemler yapabiliriz. Örneğin products|length ile products listesinin uzunluğunu alırız.
 
 block : html içerisinde bir bloğu tanımlamak için kullanılır. {% block content %} {% endblock %} şeklinde kullanılır.
+
+{% include "dosya" %} : html içerisinde başka bir html dosyasını çağırırız.
+
+Local Static Files : settings.py içerisinde STATIC_URL tanımlarız. STATICFILES_DIRS içerisinde dosyaların bulunduğu dizini tanımlarız. {% load static %} ile static dosyaları kullanabiliriz. {% static "dosya" %} ile dosyaları çağırırız.
 """
