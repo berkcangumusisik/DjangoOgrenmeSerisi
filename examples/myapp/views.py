@@ -11,7 +11,7 @@ data = {
 def index(request):
     
     categories= list(data.keys())
-    return render(request, 'myapp/index.html',{"categories":categories})
+    return render(request, 'index.html',{"categories":categories})
 
 def getProductsByCategoryId(request, category_id):
     category_list = list(data.keys())
@@ -28,7 +28,7 @@ def getProductsByCategoryId(request, category_id):
 def getProductsByCategory(request, category):
     
         products = data[category]        
-        return render(request, 'myapp/products.html', {
+        return render(request, 'products.html', {
             "category": category,
             "products": products,
             "now" : datetime.datetime.now()
@@ -58,4 +58,5 @@ block : html içerisinde bir bloğu tanımlamak için kullanılır. {% block con
 {% include "dosya" %} : html içerisinde başka bir html dosyasını çağırırız.
 
 Local Static Files : settings.py içerisinde STATIC_URL tanımlarız. STATICFILES_DIRS içerisinde dosyaların bulunduğu dizini tanımlarız. {% load static %} ile static dosyaları kullanabiliriz. {% static "dosya" %} ile dosyaları çağırırız.
+CSS ve JS dosyalarını kullanmak için {% load static %} ile static dosyaları kullanabiliriz. {% static "dosya" %} ile dosyaları çağırırız.
 """

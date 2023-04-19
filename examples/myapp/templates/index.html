@@ -1,13 +1,26 @@
 {% extends 'layout.html' %}
+{% load static %}
+{% block css_files%}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock css_files %}
 {% block page_title %}
   Index
 {% endblock page_title %}
 
 {% block content %}
-      <ul>
-          {% for category in categories %} 
-              <li><a href="{% url "products_by_category" category%}">{{ category}}</a></li>
+<div class="container">
+  <div class="row">
+    <div class="col">
+        {% for category in categories %} 
+            <a class ="btn btn-primary"href="{% url "products_by_category" category%}">{{ category}}</a>
 
-          {% endfor %}
-      </ul>
+        {% endfor %}
+    </div>
+  </div>
+</div>
+
 {% endblock content %}
+
+{% block js_files %}
+      <script src="{% static 'js/script.js' %}"></script>
+{% endblock  %}
