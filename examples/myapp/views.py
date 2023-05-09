@@ -1,7 +1,11 @@
+from django.http import Http404
 from django.http.response import HttpResponseNotFound
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 import datetime
+from .models import Product
+from django.db.models import Avg, Min, Max
+
 data = {
     "telefon":["Samsung S21", "Samsung S21 Ultra", "Samsung S21 Plus", "Samsung S21 FE", "Samsung S21 5G"],
     "bilgisayar":["Asus","Lenovo"],
@@ -9,10 +13,20 @@ data = {
 }
 
 def index(request):
+    products = Product.objects.all().order_by("product_name")
+    products_count = Product.objects.filter(isActive=True).count()
+    price = Product.objects.filter(isActive=True).aggregate(Avg('price'),Min('price'),Max('price'))
+    context = {
+        "products":products,
+        "products_count":products_count,
+        "price":price
+    }
+    return render(request, 'index.html',context)
+def details(request, slug):
     
-    categories= list(data.keys())
-    return render(request, 'index.html',{"categories":categories})
-
+    product = get_object_or_404(Product, slug = slug)
+    context = {"product":product}
+    return render(request, 'details.html', context)
 def getProductsByCategoryId(request, category_id):
     category_list = list(data.keys())
 
@@ -61,7 +75,3 @@ Local Static Files : settings.py içerisinde STATIC_URL tanımlarız. STATICFILE
 CSS ve JS dosyalarını kullanmak için {% load static %} ile static dosyaları kullanabiliriz. {% static "dosya" %} ile dosyaları çağırırız.
 """
 
-
-""" 
-
-"""

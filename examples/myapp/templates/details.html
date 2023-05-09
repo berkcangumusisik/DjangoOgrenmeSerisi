@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% load static%}
+
+{% block page_title %}
+    {{ product.product_name }}
+{% endblock  %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>
+                    {{ product.product_name }}
+                </h1>
+                <p>
+                    {{ product.description }}
+                </p>
+            </div>
+        </div>
+    </div>
+     
+  
+
+{% endblock %}

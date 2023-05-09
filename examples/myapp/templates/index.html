@@ -11,10 +11,21 @@
 <div class="container">
   <div class="row">
     <div class="col">
-        {% for category in categories %} 
-            <a class ="btn btn-primary"href="{% url "products_by_category" category%}">{{ category}}</a>
-
-        {% endfor %}
+        <ul>
+          {% for product in products %}
+            <li>
+              <a href="{% url 'product_details' product.slug %}">
+                {{ product.product_name }} 
+              </a>
+            </li>
+          {% endfor %}
+        </ul> 
+        
+        <hr>
+        <p>{{products_count}} adet ürün bulundu.</p>
+        <p>{{price.price__avg}} TL ortalama fiyat hesaplandı.</p>
+        <p>{{price.price__min}} TL en düşük fiyat hesaplandı.</p>
+        <p>{{price.price__max}} TL en yüksek fiyat hesaplandı.</p>
     </div>
   </div>
 </div>
