@@ -8,7 +8,7 @@ class Product(models.Model):
     imageUrl = models.CharField(max_length=200)
     isActive = models.BooleanField(default=True)
     category = models.CharField(max_length=50, null=True)
-    slug = models.SlugField(default="",null=False, db_index=True, unique=True)
+    slug = models.SlugField(default="", blank = True,null=False, db_index=True, unique=True)
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.product_name)

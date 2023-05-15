@@ -73,5 +73,7 @@ block : html içerisinde bir bloğu tanımlamak için kullanılır. {% block con
 
 Local Static Files : settings.py içerisinde STATIC_URL tanımlarız. STATICFILES_DIRS içerisinde dosyaların bulunduğu dizini tanımlarız. {% load static %} ile static dosyaları kullanabiliriz. {% static "dosya" %} ile dosyaları çağırırız.
 CSS ve JS dosyalarını kullanmak için {% load static %} ile static dosyaları kullanabiliriz. {% static "dosya" %} ile dosyaları çağırırız.
+
+python manage.py superuser : admin paneline giriş yapmak için kullanılır.
 """
 
