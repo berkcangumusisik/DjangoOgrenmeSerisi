@@ -1,18 +1,18 @@
 from django.db import models
 from django.utils.text import slugify
-
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+    def __str__(self):
+        return f"{self.name}"
 class Product(models.Model):
     product_name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     description = models.CharField(max_length=200)
     imageUrl = models.CharField(max_length=200)
     isActive = models.BooleanField(default=True)
-    category = models.CharField(max_length=50, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, related_name="products")
     slug = models.SlugField(default="", blank = True,null=False, db_index=True, unique=True)
     
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.product_name)
-        super().save(*args, **kwargs)
     def __str__(self):
         return f"{self.product_name} - {self.price}"
 """ 
@@ -52,4 +52,10 @@ p3.delete()
 db_index : Veritabanında index oluşturur.
 unique : Veritabanında unique index oluşturur.
 slugify : Verilen string değerini url uyumlu hale getirir.
+
+
+One to Many İlişki
+Bir model sınıfı başka bir model sınıfına ForeignKey ile bağlanır. ForeignKey alanı bir başka model sınıfının Primary Key alanını tutar.
+
+models.ForeignKey(Category, on_delete=models.CASCADE) : Category model sınıfının Primary Key alanını tutar. Category model sınıfı silindiğinde bu alana sahip Product model sınıfı silinir.
 """
