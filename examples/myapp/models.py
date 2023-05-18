@@ -4,14 +4,27 @@ class Category(models.Model):
     name = models.CharField(max_length=50)
     def __str__(self):
         return f"{self.name}"
+class Address(models.Model):
+    street = models.CharField(max_length=50)
+    postal_code = models.CharField(max_length=5)
+    city = models.CharField(max_length=50)
+    def __str__(self):
+        return f"{self.street} - {self.postal_code} - {self.city}"
+class Supplier(models.Model):
+    company_name = models.CharField(max_length=50)
+    address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True)
+    def __str__(self):
+        return f"{self.company_name}"
+
 class Product(models.Model):
     product_name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     description = models.CharField(max_length=200)
     imageUrl = models.CharField(max_length=200)
     isActive = models.BooleanField(default=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, related_name="products")
     slug = models.SlugField(default="", blank = True,null=False, db_index=True, unique=True)
+    categories = models.ManyToManyField(Category)
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, null=True)
     
     def __str__(self):
         return f"{self.product_name} - {self.price}"
@@ -58,4 +71,6 @@ One to Many İlişki
 Bir model sınıfı başka bir model sınıfına ForeignKey ile bağlanır. ForeignKey alanı bir başka model sınıfının Primary Key alanını tutar.
 
 models.ForeignKey(Category, on_delete=models.CASCADE) : Category model sınıfının Primary Key alanını tutar. Category model sınıfı silindiğinde bu alana sahip Product model sınıfı silinir.
+
+models.ManyToManyField() : Çoktan Çoka ilişkiyi temsil eder.
 """
