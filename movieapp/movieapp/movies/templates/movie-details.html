@@ -1,4 +1,3 @@
-
 {% extends 'movies/base.html' %} 
 
 {% load static %} 
@@ -13,7 +12,7 @@
 
   <div id="content-wrapper" class="d-flex flex-column">
     <div id="content">
-     {% include 'partials/_navbar.html' %}
+     {% include 'partials/_topbar.html' %}
 
       <div class="container-fluid">
         <div class="row">
@@ -25,27 +24,23 @@
                 </h6>
                 <small class="text-muted">8,784</small>
               </div>
-              <img src="{% static 'img/'|add:movie.coverImage %}" class="img-fluid" alt="..." />
+              <img src="{% static 'img/'|add:movie.image_cover %}" class="img-fluid" alt="..." />
             </div>
           </div>
           <div class="col-xl-3 col-lg-3">
             <div class="bg-white p-3 widget shadow rounded mb-4">
-              <img src="{% static 'img/'|add:movie.imageUrl %}" class="img-fluid rounded" alt="..." />
-              <h1 class="h6 mb-0 mt-3 font-weight-bold text-gray-900">
-                Director
-              </h1>
-              <p>Jon Watts</p>
-              <h1 class="h6 mb-0 mt-3 font-weight-bold text-gray-900">
-                Writers
-              </h1>
-              <p>Erik Sommers,Stan Lee,Chris McKenna</p>
-              <h1 class="h6 mb-0 mt-3 font-weight-bold text-gray-900">Cast</h1>
-              <p>Tom Holland,Jake Gyllenhaal,Zendaya</p>
-              <h1 class="h6 mb-0 mt-3 font-weight-bold text-gray-900">Plot</h1>
-              <p class="mb-0">
-                Peter Parker and his friends go on a summer trip to Europe.
-                However, they will hardly be able to rest - Peter.
-              </p>
+              <img src="{% static 'img/'|add:movie.image_name %}" class="img-fluid rounded" alt="..." />
+             
+              <p>
+                {% for person in people %}
+                  {% if person.duty_type == "3" %}
+                     <h1 class="h6 mb-0 mt-3 font-weight-bold text-gray-900">
+                        Director
+                    </h1>
+                    <p>{{ person.full_name }}</p>
+                  {% endif %}
+                {% endfor %}
+              </p>              
             </div>
           </div>
           <div class="col-xl-9 col-lg-9">
@@ -57,17 +52,18 @@
                     {{ movie.title }}
                   </h3>
                   <p class="mb-0 text-gray-800">
-                    <small class="text-muted"
-                      ><i class="fas fa-film fa-fw fa-sm mr-1"></i> Action /
-                      Adventure / Science Fiction / 3D</small>
+                    <small class="text-muted">
+                      <i class="fas fa-film fa-fw fa-sm mr-1"></i>
+                        {% for genre in genres %}
+                          / {{ genre.name }}
+                        {% endfor %}
+                    </small>
                   </p>
                 </div>
                 <div class="col-lg-5 text-right">
                   <a
                     href="#"
-                    class="d-sm-inline-block btn btn-primary shadow-sm"
-                    ><i class="fas fa-share-alt"></i
-                  ></a>
+                    class="d-sm-inline-block btn btn-primary shadow-sm"><i class="fas fa-share-alt"></i></a>
                   <a
                     href="#"
                     class="d-sm-inline-block btn btn-danger shadow-sm"
@@ -80,8 +76,8 @@
                 class="row d-flex align-items-center justify-content-between py-3 px-4">
                 <div class="col-lg-6 m-b-4">
                   <p class="mb-0 text-gray-900">
-                    <i class="fas fa-money-bill fa-sm fa-fw mr-1"></i> BUDGET -
-                    <span class="text-white rounded px-2 py-1 bg-info">$160,000,000</span>
+                    <i class="fas fa-money-bill fa-sm fa-fw mr-1"></i> Filmin Bütçesi -
+                    <span class="text-white rounded px-2 py-1 bg-info">$ {{ movie.budget|floatformat:0 }}</span>
                   </p>
                 </div>
                 <div class="col-lg-6 text-right">
@@ -156,313 +152,66 @@
                   class="tab-pane fade active show"
                   id="home"
                   role="tabpanel"
-                  aria-labelledby="home-tab"
-                >
-                  <h5 class="mt-0 mb-3">New Year's Eve on the Waterfront</h5>
-                  <p>
-                    Boston Harbor Now in partnership with the Friends of
-                    Christopher Columbus Park, the Wharf District Council and
-                    the City of Boston is proud to announce the New Year's Eve
-                    Midnight Harbor Fireworks! This beloved nearly 40-year old
-                    tradition is made possible by the generous support of local
-                    waterfront organizations and businesses and the support of
-                    the City of Boston and the Office of Mayor Marty Walsh.
-                  </p>
-                  <p>
-                    Join us as we ring in the New Year with a dazzling display
-                    over Boston Harbor. Public viewing is free and available
-                    from the Harborwalk of these suggested viewing locations:
-                  </p>
-                  <ul>
-                    <li>Christopher Columbus Park, North End</li>
-                    <li>Fan Pier, Seaport District</li>
-                    <li>East Boston Harborwalk</li>
-                  </ul>
-                  <p>The show will begin promptly at midnight.</p>
-                  <p>
-                    Register here for a reminder and updates about the harbor
-                    fireworks and other waterfront public programs as they
-                    become available. Be the first to be notified for popular
-                    waterfront New Year's Eve public activities.
-                  </p>
-                  <p class="mb-2">
-                    Register here for a reminder and updates about the harbor
-                    fireworks and other waterfront public programs as they
-                    become available. Be the first to be notified for popular
-                    waterfront New Year's Eve public activities.
-                  </p>
+                  aria-labelledby="home-tab">
+                  {{ movie.description }}
                 </div>
                 <div
                   class="tab-pane fade"
                   id="profile"
                   role="tabpanel"
-                  aria-labelledby="profile-tab"
-                >
-                  <div class="row">
-                    <div class="col-xl-4 col-lg-4">
-                      <h5 class="h6 mt-0 mb-3 font-weight-bold text-gray-900">
+                  aria-labelledby="profile-tab">
+                  <h5 class="h6 mt-0 mb-3 font-weight-bold text-gray-900">
                         CAST
-                      </h5>
-                      <div class="artist-list mb-3">
-                        <a class="d-flex align-items-center" href="#">
-                          <div class="dropdown-list-image mr-3">
-                            <img
-                              class="rounded-circle"
-                              src="{% static 'img/s1.png' %}"
-                              alt=""
-                            />
-                            <div class="status-indicator bg-success"></div>
+                    </h5>
+                  <div class="row">
+
+                    {% for person in people %}
+                      {% if person.duty_type == "2" %}
+                           <div class="artist-list mb-3 col-3">
+                              <a class="d-flex align-items-center" href="#">
+                                <div class="dropdown-list-image mr-3">
+                                  <img class="rounded-circle" src="{% static 'img/'|add:person.image_name %}" alt=""/>
+                                  <div class="status-indicator bg-success"></div>
+                                </div>
+                                <div class="font-weight-bold">
+                                  <div class="text-truncate">{{ person.full_name }}</div>
+                                  <div class="small text-gray-500">Acting</div>
+                                </div>
+                              </a>
                           </div>
-                          <div class="font-weight-bold">
-                            <div class="text-truncate">Carla Gugino</div>
-                            <div class="small text-gray-500">Acting</div>
-                          </div>
-                        </a>
-                      </div>
-                      <div class="artist-list mb-3">
-                        <a class="d-flex align-items-center" href="#">
-                          <div class="dropdown-list-image mr-3">
-                            <img
-                              class="rounded-circle"
-                              src="{% static 'img/s2.png' %}"
-                              alt=""
-                            />
-                            <div class="status-indicator bg-success"></div>
-                          </div>
-                          <div class="font-weight-bold">
-                            <div class="text-truncate">Sylvester Stallone</div>
-                            <div class="small text-gray-500">Acting</div>
-                          </div>
-                        </a>
-                      </div>
-                      <div class="artist-list mb-3">
-                        <a class="d-flex align-items-center" href="#">
-                          <div class="dropdown-list-image mr-3">
-                            <img
-                              class="rounded-circle"
-                              src="img/s3.png"
-                              alt=""
-                            />
-                            <div class="status-indicator bg-success"></div>
-                          </div>
-                          <div class="font-weight-bold">
-                            <div class="text-truncate">Rose Byrne</div>
-                            <div class="small text-gray-500">Acting</div>
-                          </div>
-                        </a>
-                      </div>
-                      <div class="artist-list mb-3">
-                        <a class="d-flex align-items-center" href="#">
-                          <div class="dropdown-list-image mr-3">
-                            <img
-                              class="rounded-circle"
-                              src="img/s4.png"
-                              alt=""
-                            />
-                            <div class="status-indicator bg-success"></div>
-                          </div>
-                          <div class="font-weight-bold">
-                            <div class="text-truncate">Jason Statham</div>
-                            <div class="small text-gray-500">Acting</div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4">
-                      <h5 class="h6 mt-0 mb-3 font-weight-bold text-gray-900">
-                        CREW
-                      </h5>
-                      <div class="artist-list mb-3">
-                        <a class="d-flex align-items-center" href="#">
-                          <div class="dropdown-list-image mr-3">
-                            <img
-                              class="rounded-circle"
-                              src="img/s3.png"
-                              alt=""
-                            />
-                            <div class="status-indicator bg-success"></div>
-                          </div>
-                          <div class="font-weight-bold">
-                            <div class="text-truncate">Rose Byrne</div>
-                            <div class="small text-gray-500">Acting</div>
-                          </div>
-                        </a>
-                      </div>
-                      <div class="artist-list mb-3">
-                        <a class="d-flex align-items-center" href="#">
-                          <div class="dropdown-list-image mr-3">
-                            <img
-                              class="rounded-circle"
-                              src="img/s4.png"
-                              alt=""
-                            />
-                            <div class="status-indicator bg-success"></div>
-                          </div>
-                          <div class="font-weight-bold">
-                            <div class="text-truncate">Jason Statham</div>
-                            <div class="small text-gray-500">Acting</div>
-                          </div>
-                        </a>
-                      </div>
-                      <div class="artist-list mb-3">
-                        <a class="d-flex align-items-center" href="#">
-                          <div class="dropdown-list-image mr-3">
-                            <img
-                              class="rounded-circle"
-                              src="img/s1.png"
-                              alt=""
-                            />
-                            <div class="status-indicator bg-success"></div>
-                          </div>
-                          <div class="font-weight-bold">
-                            <div class="text-truncate">Carla Gugino</div>
-                            <div class="small text-gray-500">Acting</div>
-                          </div>
-                        </a>
-                      </div>
-                      <div class="artist-list mb-3">
-                        <a class="d-flex align-items-center" href="#">
-                          <div class="dropdown-list-image mr-3">
-                            <img
-                              class="rounded-circle"
-                              src="img/s2.png"
-                              alt=""
-                            />
-                            <div class="status-indicator bg-success"></div>
-                          </div>
-                          <div class="font-weight-bold">
-                            <div class="text-truncate">Sylvester Stallone</div>
-                            <div class="small text-gray-500">Acting</div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4">
-                      <h5 class="h6 mt-0 mb-3 font-weight-bold text-gray-900">
-                        Support
-                      </h5>
-                      <div class="artist-list mb-3">
-                        <a class="d-flex align-items-center" href="#">
-                          <div class="dropdown-list-image mr-3">
-                            <img
-                              class="rounded-circle"
-                              src="img/s1.png"
-                              alt=""
-                            />
-                            <div class="status-indicator bg-success"></div>
-                          </div>
-                          <div class="font-weight-bold">
-                            <div class="text-truncate">Carla Gugino</div>
-                            <div class="small text-gray-500">Acting</div>
-                          </div>
-                        </a>
-                      </div>
-                      <div class="artist-list mb-3">
-                        <a class="d-flex align-items-center" href="#">
-                          <div class="dropdown-list-image mr-3">
-                            <img
-                              class="rounded-circle"
-                              src="img/s2.png"
-                              alt=""
-                            />
-                            <div class="status-indicator bg-success"></div>
-                          </div>
-                          <div class="font-weight-bold">
-                            <div class="text-truncate">Sylvester Stallone</div>
-                            <div class="small text-gray-500">Acting</div>
-                          </div>
-                        </a>
-                      </div>
-                      <div class="artist-list mb-3">
-                        <a class="d-flex align-items-center" href="#">
-                          <div class="dropdown-list-image mr-3">
-                            <img
-                              class="rounded-circle"
-                              src="img/s3.png"
-                              alt=""
-                            />
-                            <div class="status-indicator bg-success"></div>
-                          </div>
-                          <div class="font-weight-bold">
-                            <div class="text-truncate">Rose Byrne</div>
-                            <div class="small text-gray-500">Acting</div>
-                          </div>
-                        </a>
-                      </div>
-                      <div class="artist-list mb-3">
-                        <a class="d-flex align-items-center" href="#">
-                          <div class="dropdown-list-image mr-3">
-                            <img
-                              class="rounded-circle"
-                              src="img/s4.png"
-                              alt=""
-                            />
-                            <div class="status-indicator bg-success"></div>
-                          </div>
-                          <div class="font-weight-bold">
-                            <div class="text-truncate">Jason Statham</div>
-                            <div class="small text-gray-500">Acting</div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
+                      {% endif %}                    
+                    {% endfor %}                
+                  
+                  
                   </div>
                 </div>
                 <div
                   class="tab-pane fade"
                   id="videos"
                   role="tabpanel"
-                  aria-labelledby="videos-tab"
-                >
+                  aria-labelledby="videos-tab">
                   <div class="row">
-                    <div class="col-xl-6 col-lg-6">
-                      <div class="mb-4">
-                        <iframe
-                          width="100%"
-                          height="215"
-                          src="https://www.youtube.com/embed/uNppTCoYdWI"
-                          frameborder="0"
-                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                          allowfullscreen=""
-                        ></iframe>
-                      </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6">
-                      <div class="mb-4">
-                        <iframe
-                          width="100%"
-                          height="215"
-                          src="https://www.youtube.com/embed/XkT6uwHFUKY"
-                          frameborder="0"
-                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                          allowfullscreen=""
-                        ></iframe>
-                      </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6">
-                      <div class="mb-4">
-                        <iframe
-                          width="100%"
-                          height="215"
-                          src="https://www.youtube.com/embed/uNppTCoYdWI"
-                          frameborder="0"
-                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                          allowfullscreen=""
-                        ></iframe>
-                      </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6">
-                      <div class="mb-4">
-                        <iframe
-                          width="100%"
-                          height="215"
-                          src="https://www.youtube.com/embed/XkT6uwHFUKY"
-                          frameborder="0"
-                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                          allowfullscreen=""
-                        ></iframe>
-                      </div>
-                    </div>
+
+                      {% for video in videos %}
+                          <div class="col-xl-6 col-lg-6">
+                            <div class="mb-4">
+                              <iframe
+                                width="100%"
+                                height="215"
+                                src="https://www.youtube.com/embed/{{ video.url }}"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen=""
+                              ></iframe>
+                            </div>
+                          </div>
+                      
+                      {% endfor %}
+
+
+
+                  
+                   
                   </div>
                 </div>
                 <div

@@ -62,6 +62,8 @@ class Movie(models.Model):
     slug = models.SlugField(unique=True,db_index=True)
     budget = models.DecimalField(max_digits=19,decimal_places=2)
     language = models.CharField(max_length=100)
+    is_active = models.BooleanField(default=False)
+    is_home = models.BooleanField(default=False)
     people = models.ManyToManyField(Person)
     genres = models.ManyToManyField(Genre)
 
