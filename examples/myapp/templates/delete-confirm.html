@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block css_files%}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock css_files %}
+{% block page_title %}
+    {{ product.product_name }}
+{% endblock page_title %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col">
+        <strong>{{ product.product_name }}</strong> isimli silmek istediğinizden emin misiniz? 
+        <form action="{% url 'delete_update' product.id %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="Sil" class="btn btn-danger">
+            <a href="{% url 'product_list' %}" class="btn btn-primary">İptal</a>
+        </form>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block js_files %}
+      <script src="{% static 'js/script.js' %}"></script>
+{% endblock  %}

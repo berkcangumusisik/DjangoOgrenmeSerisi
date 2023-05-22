@@ -1,25 +1,22 @@
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.http.response import HttpResponseNotFound
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 import datetime
 from .models import Product
 from django.db.models import Avg, Min, Max
+from .forms  import ProductForm
 
-data = {
-    "telefon":["Samsung S21", "Samsung S21 Ultra", "Samsung S21 Plus", "Samsung S21 FE", "Samsung S21 5G"],
-    "bilgisayar":["Asus","Lenovo"],
-    "elektronik":[]
-}
+# data = {
+#     "telefon":["Samsung S21", "Samsung S21 Ultra", "Samsung S21 Plus", "Samsung S21 FE", "Samsung S21 5G"],
+#     "bilgisayar":["Asus","Lenovo"],
+#     "elektronik":[]
+# }
 
 def index(request):
-    products = Product.objects.all().order_by("product_name")
-    products_count = Product.objects.filter(isActive=True).count()
-    price = Product.objects.filter(isActive=True).aggregate(Avg('price'),Min('price'),Max('price'))
+    products = Product.objects.filter(isActive = True).order_by("product_name")
     context = {
         "products":products,
-        "products_count":products_count,
-        "price":price
     }
     return render(request, 'index.html',context)
 def details(request, slug):
@@ -27,29 +24,49 @@ def details(request, slug):
     product = get_object_or_404(Product, slug = slug)
     context = {"product":product}
     return render(request, 'details.html', context)
-def getProductsByCategoryId(request, category_id):
-    category_list = list(data.keys())
 
-    if category_id > len(category_list):
-        return HttpResponseNotFound("yanlış kategori seçimi")
+def list(request):
+    if 'q' in request.GET and request.GET.get('q'):
+        q = request.GET['q']
+        products = Product.objects.filter(name__contains=q).order_by("product_name")
+    else:
+        products = Product.objects.all().order_by("product_name")
         
-    category_name = category_list[category_id-1]
-    
-    redirect_path = reverse("products_by_category", args= [category_name])
-    
-    return redirect(redirect_path)
+    context={
+            "products":products,
+        }
+    return render(request, 'list.html', context)
 
-def getProductsByCategory(request, category):
+def create(request):
+    if request.method == "POST":
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("product_list")
+        else:
+            form = ProductForm()
+    form = ProductForm()
     
-        products = data[category]        
-        return render(request, 'products.html', {
-            "category": category,
-            "products": products,
-            "now" : datetime.datetime.now()
-        })
-    
+    return render(request, 'create.html', {"form":form})
 
+def update(request, id):
+    product = get_object_or_404(Product, pk = id)
+    if request.method == "POST":
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect("product_list")
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'update.html', {"form":form})
 
+def delete(request, id):
+    product = get_object_or_404(Product, pk = id)
+
+    if request.method == "POST":
+        Product.objects.get(pk=id).delete()
+        return redirect("product_list")
+    return render(request, 'delete-confirm.html', {"product":product})
 """
 HttpResponse : Django ile birlikte gelen bir fonksiyondur. İçerisine yazılan değeri ekrana basar.
 Dinamik path tanımlamak için : <degiskenAdi> şeklinde tanımlanır. Fonksiyon içerisinde bu değişkeni kullanabiliriz.
@@ -75,5 +92,27 @@ Local Static Files : settings.py içerisinde STATIC_URL tanımlarız. STATICFILE
 CSS ve JS dosyalarını kullanmak için {% load static %} ile static dosyaları kullanabiliriz. {% static "dosya" %} ile dosyaları çağırırız.
 
 python manage.py superuser : admin paneline giriş yapmak için kullanılır.
+
+
+FORM İŞLEMLERİ
+- request.GET : formdan gelen verileri alır.
+- __contains : içerisinde arama yapar.
+- request.POST : formdan gelen verileri alır. HTTP POST kullanma nedenimiz, verileri url üzerinde göstermemek içindir.
+- CSRF : Cross Site Request Forgery. Formdan gelen verilerin güvenliğini sağlar. settings.py içerisindeki MIDDLEWARE kısmında bulunur. {% csrf_token %} ile form içerisinde kullanılır.
+- Request.GET.get() : formdan gelen verileri alır. Eğer veri yoksa None döner.
+
+Form Class
+- Form class'ı oluşturmak için forms.Form kullanılır.
+- Form class'ı içerisinde tanımlanan alanlar, form içerisindeki alanlara karşılık gelir.
+- required olarak tanımlanan alanlar, form içerisinde zorunlu olarak doldurulması gereken alanlardır.
+- max_length ile alanların maksimum uzunluğunu belirleriz.
+- min_length ile alanların minimum uzunluğunu belirleriz.
+- decimal_places ile alanların ondalık kısmının kaç basamak olacağını belirleriz.
+
+- widget=forms.Textarea ile alanların textarea olarak görünmesini sağlarız.
+- label ile form içerisindeki alanların isimlerini belirleriz.
+
+form.as_p : form içerisindeki alanları p etiketleri içerisinde gösterir.
+form.as_ul : form içerisindeki alanları ul etiketleri içerisinde gösterir.
 """
 

@@ -1,0 +1,33 @@
+{% extends 'layout.html' %} {% load static %} {% block css_files%}
+<link rel="stylesheet" href="{% static 'css/style.css' %}" />
+{% endblock css_files %} {% block page_title %} Aranan Ürün {% endblock page_title %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <ul>
+        {% for product in products %}
+        <li>
+          <a href="{% url 'product_details' product.slug %}">
+            {{ product.product_name }}
+          </a>
+          <a href="{% url 'product_update' product.id %}">
+              <button class="btn btn-warning">Güncelle</button>
+          </a>
+
+          <a href="{% url 'delete_update' product.id %}">
+            <button class="btn btn-danger">Sil</button>
+        </a>
+        </li>
+        <br/>
+        {% endfor %}
+      </ul>
+
+      <hr />
+    </div>
+  </div>
+</div>
+
+{% endblock content %} {% block js_files %}
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

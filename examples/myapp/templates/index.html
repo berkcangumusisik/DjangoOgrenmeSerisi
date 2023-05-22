@@ -11,6 +11,11 @@
 <div class="container">
   <div class="row">
     <div class="col">
+      <form action="list" 
+      method="GET">
+        Ürün: <input type="text" name="q" placeholder="Ürün Adı Giriniz">
+        <button type="submit">Ara</button>
+      </form>
         <ul>
           {% for product in products %}
             <li>
@@ -20,12 +25,12 @@
             </li>
           {% endfor %}
         </ul> 
-        
-        <hr>
-        <p>{{products_count}} adet ürün bulundu.</p>
-        <p>{{price.price__avg}} TL ortalama fiyat hesaplandı.</p>
-        <p>{{price.price__min}} TL en düşük fiyat hesaplandı.</p>
-        <p>{{price.price__max}} TL en yüksek fiyat hesaplandı.</p>
+        <button class="btn btn-primary"><a href="create" style="color:white;">Ürün Ekle</a></button>
+
+        <a href="list">
+          <button class="btn btn-dark">Ürün Listesi</button>
+        </a>
+
     </div>
   </div>
 </div>
